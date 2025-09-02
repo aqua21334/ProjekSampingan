@@ -7,24 +7,38 @@ use Illuminate\Http\Request;
 
 class LaporanHasilController extends Controller
 {
+
+
+    // Tampilkan form edit laporan
+    public function edit($id)
+    {
+        $laporan = LaporanHasil::findOrFail($id);
+        return view('laporan_hasil.edit', compact('laporan'));
+    }
     // List semua laporan
     public function index()
     {
-        return response()->json(LaporanHasil::all());
+        $laporan_hasils = LaporanHasil::orderBy('id_laporan', 'asc')->get();
+        return view('laporan_hasil.index', compact('laporan_hasils'));
+    }
+
+    // Tampilkan form tambah laporan
+    public function create()
+    {
+        return view('laporan_hasil.create');
     }
 
     // Tambah laporan baru
     public function store(Request $request)
     {
-        $request->validate([
-            'judul' => 'required|string|max:150',
-            'isi_laporan' => 'required',
-            'dibuat_oleh' => 'required|string|max:100',
-        ]);
-
-        $laporan = LaporanHasil::create($request->all());
-
-        return response()->json($laporan, 201);
+            $validated = $request->validate([
+                'id_laporan' => 'required|string|max:20|unique:laporan_hasils,id_laporan',
+                'judul' => 'required|string|max:150',
+                'isi_laporan' => 'required',
+                'tanggal_laporan' => 'required|date',
+            ]);
+            LaporanHasil::create($validated);
+            return redirect()->route('laporan_hasil.index')->with('success', 'Laporan berhasil ditambahkan.');
     }
 
     // Detail laporan
@@ -37,10 +51,15 @@ class LaporanHasilController extends Controller
     // Update laporan
     public function update(Request $request, $id)
     {
-        $laporan = LaporanHasil::findOrFail($id);
-        $laporan->update($request->all());
-
-        return response()->json($laporan);
+            $laporan = LaporanHasil::findOrFail($id);
+            $validated = $request->validate([
+                'id_laporan' => 'required|string|max:20|unique:laporan_hasils,id_laporan,' . $laporan->no . ',no',
+                'judul' => 'required|string|max:150',
+                'isi_laporan' => 'required',
+                'tanggal_laporan' => 'required|date',
+            ]);
+            $laporan->update($validated);
+            return redirect()->route('laporan_hasil.index')->with('success', 'Laporan berhasil diupdate.');
     }
 
     // Hapus laporan
@@ -48,8 +67,7 @@ class LaporanHasilController extends Controller
     {
         $laporan = LaporanHasil::findOrFail($id);
         $laporan->delete();
-
-        return response()->json(['message' => 'Laporan berhasil dihapus']);
+        return redirect()->route('laporan_hasil.index')->with('success', 'Laporan berhasil dihapus.');
     }
 }
 

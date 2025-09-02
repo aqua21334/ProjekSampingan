@@ -10,36 +10,52 @@ class LiteraturController extends Controller
     // List semua literatur
     public function index()
     {
-        return response()->json(Literatur::all());
+        $literaturs = Literatur::orderBy('id_literatur', 'asc')->get();
+        return view('literatur.index', compact('literaturs'));
     }
 
-    // Tambah literatur baru
+    // Tampilkan form tambah literatur
+    public function create()
+    {
+        return view('literatur.create');
+    }
+
+    // Simpan literatur baru
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'judul' => 'required|string|max:200',
+            'penulis' => 'nullable|string|max:150',
+            'tahun' => 'nullable|string|max:4',
+            'penerbit' => 'nullable|string|max:150',
             'sni_number' => 'nullable|string|max:100',
+            'link' => 'nullable|string|max:255',
         ]);
-
-        $literatur = Literatur::create($request->all());
-
-        return response()->json($literatur, 201);
+        Literatur::create($validated);
+        return redirect()->route('literatur.index')->with('success', 'Literatur berhasil ditambahkan.');
     }
 
-    // Detail literatur
-    public function show($id)
+    // Tampilkan form edit literatur
+    public function edit($id)
     {
         $literatur = Literatur::findOrFail($id);
-        return response()->json($literatur);
+        return view('literatur.edit', compact('literatur'));
     }
 
     // Update literatur
     public function update(Request $request, $id)
     {
         $literatur = Literatur::findOrFail($id);
-        $literatur->update($request->all());
-
-        return response()->json($literatur);
+        $validated = $request->validate([
+            'judul' => 'required|string|max:200',
+            'penulis' => 'nullable|string|max:150',
+            'tahun' => 'nullable|string|max:4',
+            'penerbit' => 'nullable|string|max:150',
+            'sni_number' => 'nullable|string|max:100',
+            'link' => 'nullable|string|max:255',
+        ]);
+        $literatur->update($validated);
+        return redirect()->route('literatur.index')->with('success', 'Literatur berhasil diupdate.');
     }
 
     // Hapus literatur
@@ -47,7 +63,6 @@ class LiteraturController extends Controller
     {
         $literatur = Literatur::findOrFail($id);
         $literatur->delete();
-
-        return response()->json(['message' => 'Literatur berhasil dihapus']);
+        return redirect()->route('literatur.index')->with('success', 'Literatur berhasil dihapus.');
     }
 }

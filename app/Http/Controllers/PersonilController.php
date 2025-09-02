@@ -7,10 +7,47 @@ use Illuminate\Http\Request;
 
 class PersonilController extends Controller
 {
-    // Ambil semua data personil
-    public function index()
+    // Tampilkan form edit personil
+    public function edit($nip)
     {
-        return response()->json(Personil::all());
+        $personil = Personil::findOrFail($nip);
+        return view('personil.edit', compact('personil'));
+    }
+
+    // Update data personil
+    public function update(Request $request, $nip)
+    {
+        $request->validate([
+            'nip' => 'required|unique:personils,nip,' . $nip . ',nip',
+            'nama_personil' => 'required',
+            'jabatan' => 'required',
+        ]);
+        $personil = Personil::findOrFail($nip);
+        $personil->nip = $request->nip;
+        $personil->nama_personil = $request->nama_personil;
+        $personil->jabatan = $request->jabatan;
+        $personil->no_hp = $request->no_hp;
+        $personil->email = $request->email;
+        $personil->save();
+        return redirect()->route('personil.index')->with('success', 'Personil berhasil diupdate');
+    }
+    // Tampilkan form input personil
+    public function create()
+    {
+        return view('personil.create');
+    }
+    // Ambil semua data personil dan tampilkan di view
+    public function index(Request $request)
+    {
+        $query = Personil::query();
+        if ($request->filled('nip')) {
+            $query->where('nip', 'like', '%' . $request->nip . '%');
+        }
+        if ($request->filled('nama_personil')) {
+            $query->where('nama_personil', 'like', '%' . $request->nama_personil . '%');
+        }
+        $personils = $query->get();
+        return view('personil.index', compact('personils'));
     }
 
     // Simpan data personil baru
@@ -19,10 +56,17 @@ class PersonilController extends Controller
         $request->validate([
             'nip' => 'required|unique:personils',
             'nama_personil' => 'required',
+            'jabatan' => 'required',
         ]);
 
-        $personil = Personil::create($request->all());
-        return response()->json($personil, 201);
+        $personil = Personil::create([
+            'nip' => $request->nip,
+            'nama_personil' => $request->nama_personil,
+            'jabatan' => $request->jabatan,
+            'no_hp' => $request->no_hp,
+            'email' => $request->email,
+        ]);
+        return redirect()->route('personil.index')->with('success', 'Personil berhasil ditambahkan');
     }
 
     // Tampilkan detail personil
@@ -32,19 +76,12 @@ class PersonilController extends Controller
         return response()->json($personil);
     }
 
-    // Update data personil
-    public function update(Request $request, $nip)
-    {
-        $personil = Personil::findOrFail($nip);
-        $personil->update($request->all());
-        return response()->json($personil);
-    }
 
     // Hapus personil
     public function destroy($nip)
     {
-        $personil = Personil::findOrFail($nip);
-        $personil->delete();
-        return response()->json(['message' => 'Personil berhasil dihapus']);
+    $personil = Personil::findOrFail($nip);
+    $personil->delete();
+    return redirect()->route('personil.index')->with('success', 'Personil telah dihapus');
     }
 }

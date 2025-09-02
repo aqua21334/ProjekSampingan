@@ -10,11 +10,13 @@ class LaporanHasil extends Model
     use HasFactory;
 
     protected $primaryKey = 'id_laporan';
+    public $incrementing = false;
+    protected $keyType = 'string';
 
     protected $fillable = [
+        'id_laporan',
         'judul',
         'isi_laporan',
-        'dibuat_oleh',
         'tanggal_laporan',
     ];
 }
