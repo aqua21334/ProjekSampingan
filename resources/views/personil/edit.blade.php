@@ -1,40 +1,111 @@
-@extends('layouts.app')
 
-@section('content')
-<div class="flex justify-center items-center min-h-screen bg-gray-100 dark:bg-gray-900">
-    <div class="w-full max-w-md bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
-        <h2 class="text-2xl font-bold mb-6 text-center text-gray-800 dark:text-gray-100">Edit Personil</h2>
-        <form action="{{ route('personil.update', $personil->nip) }}" method="POST" class="space-y-6">
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Personil</title>
+    <style>
+        body {
+            font-family: 'Konkhmer Sleokchher', sans-serif;
+            background: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .form-container {
+            width: 1060px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0px 4px 6px rgba(0,0,0,0.2);
+        }
+        h1 {
+            text-align: center;
+            font-size: 40px;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+        input {
+            width: 100%;
+            max-width: 540px;
+            height: 44px;
+            border-radius: 8px;
+            border: none;
+            background: #D9D9D9;
+            padding: 10px;
+            font-size: 16px;
+        }
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        .btn {
+            width: 160px;
+            height: 50px;
+            border-radius: 8px;
+            border: none;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .btn-back {
+            background: #7D81BE;
+            color: white;
+        }
+        .btn-submit {
+            background: #4CAF50;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <h1>Edit Personil</h1>
+        <form action="{{ route('personil.update', $personil->nip) }}" method="POST">
             @csrf
             @method('PUT')
-            <div>
-                <label for="nip" class="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">NIP</label>
-                <input type="text" name="nip" id="nip" value="{{ old('nip', $personil->nip) }}" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-900 dark:text-gray-100 @error('nip') border-red-500 @enderror" required pattern="^[A-Za-z0-9]+$" title="NIP harus unik dan hanya huruf/angka">
-                @error('nip')
-                    <span class="text-red-600 text-sm">{{ $message }}</span>
-                @enderror
+
+            <div class="form-group">
+                <label for="nip">NIP</label>
+                <input type="text" id="nip" name="nip" value="{{ old('nip', $personil->nip) }}" required>
             </div>
-            <div>
-                <label for="nama_personil" class="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">Nama Personil</label>
-                <input type="text" name="nama_personil" id="nama_personil" value="{{ $personil->nama_personil }}" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-900 dark:text-gray-100" required>
+
+            <div class="form-group">
+                <label for="nama_personil">Nama</label>
+                <input type="text" id="nama_personil" name="nama_personil" value="{{ old('nama_personil', $personil->nama_personil) }}" required>
             </div>
-            <div>
-                <label for="jabatan" class="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">Jabatan</label>
-                <input type="text" name="jabatan" id="jabatan" value="{{ $personil->jabatan }}" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-900 dark:text-gray-100">
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" value="{{ old('email', $personil->email) }}" required>
             </div>
-            <div>
-                <label for="email" class="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">Email</label>
-                <input type="email" name="email" id="email" value="{{ $personil->email }}" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-900 dark:text-gray-100">
+
+            <div class="form-group">
+                <label for="jabatan">Jabatan</label>
+                <input type="text" id="jabatan" name="jabatan" value="{{ old('jabatan', $personil->jabatan) }}" required>
             </div>
-            <div>
-                <label for="no_hp" class="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">Phone</label>
-                <input type="text" name="no_hp" id="no_hp" value="{{ $personil->no_hp }}" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-900 dark:text-gray-100">
+
+            <div class="form-group">
+                <label for="no_hp">No HP</label>
+                <input type="text" id="no_hp" name="no_hp" value="{{ old('no_hp', $personil->no_hp) }}" required>
             </div>
-            <div class="flex gap-2">
-                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-150">Update</button>
-                <a href="{{ route('personil.index') }}" class="w-full bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded transition duration-150 text-center">Batalkan</a>
+
+            <div class="form-actions">
+                <a href="{{ route('personil.index') }}" class="btn btn-back" style="text-align:center;line-height:50px;text-decoration:none;">Kembali</a>
+                <button type="submit" class="btn btn-submit">Update</button>
             </div>
         </form>
     </div>
-</div>
-@endsection
+
+</body>
+</html>

@@ -15,10 +15,17 @@ class LaporanHasilController extends Controller
         $laporan = LaporanHasil::findOrFail($id);
         return view('laporan_hasil.edit', compact('laporan'));
     }
-    // List semua laporan
-    public function index()
+    // List semua laporan dengan fitur pencarian
+    public function index(Request $request)
     {
-        $laporan_hasils = LaporanHasil::orderBy('id_laporan', 'asc')->get();
+        $query = LaporanHasil::query();
+        if ($request->filled('id_laporan')) {
+            $query->where('id_laporan', 'like', '%' . $request->id_laporan . '%');
+        }
+        if ($request->filled('judul')) {
+            $query->where('judul', 'like', '%' . $request->judul . '%');
+        }
+        $laporan_hasils = $query->orderBy('id_laporan', 'asc')->get();
         return view('laporan_hasil.index', compact('laporan_hasils'));
     }
 
@@ -53,7 +60,7 @@ class LaporanHasilController extends Controller
     {
             $laporan = LaporanHasil::findOrFail($id);
             $validated = $request->validate([
-                'id_laporan' => 'required|string|max:20|unique:laporan_hasils,id_laporan,' . $laporan->no . ',no',
+                'id_laporan' => 'required|string|max:20|unique:laporan_hasils,id_laporan,' . $laporan->id_laporan . ',id_laporan',
                 'judul' => 'required|string|max:150',
                 'isi_laporan' => 'required',
                 'tanggal_laporan' => 'required|date',

@@ -20,9 +20,16 @@ class PermintaanController extends Controller
         return view('permintaan.create');
     }
     // List semua permintaan
-    public function index()
+    public function index(Request $request)
     {
-        $permintaans = Permintaan::all();
+        $query = Permintaan::query();
+        if ($request->filled('id_permintaan')) {
+            $query->where('id_permintaan', 'like', '%' . $request->id_permintaan . '%');
+        }
+        if ($request->filled('jenis_permintaan')) {
+            $query->where('jenis_permintaan', 'like', '%' . $request->jenis_permintaan . '%');
+        }
+        $permintaans = $query->get();
         return view('permintaan.index', compact('permintaans'));
     }
 
@@ -56,7 +63,7 @@ class PermintaanController extends Controller
         // Cari berdasarkan id_permintaan
         $permintaan = Permintaan::where('id_permintaan', $id)->firstOrFail();
         $validated = $request->validate([
-            'id_permintaan' => 'required|string|max:20|unique:permintaans,id_permintaan,' . $permintaan->no . ',no',
+            'id_permintaan' => 'required|string|max:20|unique:permintaans,id_permintaan,' . $permintaan->id_permintaan . ',id_permintaan',
             'pemohon' => 'required|string|max:100',
             'jenis_permintaan' => 'required|string|max:100',
             'status' => 'nullable|string|max:50',

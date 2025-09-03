@@ -8,9 +8,16 @@ use Illuminate\Http\Request;
 
 class DokumenController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $dokumens = Dokumen::all();
+        $query = Dokumen::query();
+        if ($request->filled('id_dokumen')) {
+            $query->where('id_dokumen', 'like', '%' . $request->id_dokumen . '%');
+        }
+        if ($request->filled('jenis_dokumen')) {
+            $query->where('jenis_dokumen', 'like', '%' . $request->jenis_dokumen . '%');
+        }
+        $dokumens = $query->get();
         return view('dokumen.index', compact('dokumens'));
     }
 

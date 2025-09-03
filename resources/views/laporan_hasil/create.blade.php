@@ -1,41 +1,107 @@
-@extends('layouts.app')
-
-@section('content')
-<div class="container mx-auto py-8">
-    <div class="bg-gray-900 rounded shadow p-4 mb-6">
-        <h2 class="text-xl font-bold text-white mb-6">Tambah Laporan Hasil</h2>
-        @if ($errors->any())
-            <div class="bg-red-100 text-red-700 px-4 py-2 rounded mb-4">
-                <ul class="list-disc pl-5">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-        <form action="{{ route('laporan_hasil.store') }}" method="POST" class="space-y-4">
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Tambah Laporan Hasil</title>
+    <style>
+        body {
+            font-family: 'Konkhmer Sleokchher', sans-serif;
+            background: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .form-container {
+            width: 1060px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0px 4px 6px rgba(0,0,0,0.2);
+        }
+        h1 {
+            text-align: center;
+            font-size: 40px;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+        input, select, textarea {
+            width: 100%;
+            max-width: 540px;
+            height: 44px;
+            border-radius: 8px;
+            border: none;
+            background: #D9D9D9;
+            padding: 10px;
+            font-size: 16px;
+        }
+        textarea {
+            height: 80px;
+            resize: vertical;
+        }
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        .btn {
+            width: 160px;
+            height: 50px;
+            border-radius: 8px;
+            border: none;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .btn-back {
+            background: #7D81BE;
+            color: white;
+        }
+        .btn-submit {
+            background: #4CAF50;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Tambahkan Laporan Hasil</h1>
+        <form action="/laporan_hasil" method="POST">
             @csrf
-                <div>
-                    <label class="block text-white font-semibold mb-2">ID Laporan</label>
-                    <input type="text" name="id_laporan" value="{{ old('id_laporan') }}" class="w-full px-4 py-2 rounded bg-gray-800 text-white border border-gray-700" required maxlength="20">
-                </div>
-            <div>
-                <label class="block text-white font-semibold mb-2">Judul</label>
-                <input type="text" name="judul" value="{{ old('judul') }}" class="w-full px-4 py-2 rounded bg-gray-800 text-white border border-gray-700" required maxlength="150">
+
+            <div class="form-group">
+                <label for="id_laporan">ID Laporan</label>
+                <input type="text" id="id_laporan" name="id_laporan" required>
             </div>
-            <div>
-                <label class="block text-white font-semibold mb-2">Isi Laporan</label>
-                <textarea name="isi_laporan" class="w-full px-4 py-2 rounded bg-gray-800 text-white border border-gray-700" required>{{ old('isi_laporan') }}</textarea>
+
+            <div class="form-group">
+                <label for="judul">Judul</label>
+                <input type="text" id="judul" name="judul" required>
             </div>
-            <div>
-                <label class="block text-white font-semibold mb-2">Tanggal Laporan</label>
-                <input type="date" name="tanggal_laporan" value="{{ old('tanggal_laporan') }}" class="w-full px-4 py-2 rounded bg-gray-800 text-white border border-gray-700" required>
+
+            <div class="form-group">
+                <label for="isi_laporan">Isi Laporan</label>
+                <textarea id="isi_laporan" name="isi_laporan" required></textarea>
             </div>
-            <div class="flex justify-end">
-                <a href="{{ route('laporan_hasil.index') }}" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded mr-2">Batal</a>
-                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded font-semibold shadow">Simpan</button>
+
+            <div class="form-group">
+                <label for="tanggal_laporan">Tanggal Laporan</label>
+                <input type="date" id="tanggal_laporan" name="tanggal_laporan" required>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="btn btn-back" onclick="history.back()">Kembali</button>
+                <button type="submit" class="btn btn-submit">Simpan</button>
             </div>
         </form>
     </div>
-</div>
-@endsection
+</body>
+</html>
+

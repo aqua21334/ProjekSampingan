@@ -7,10 +7,17 @@ use Illuminate\Http\Request;
 
 class LiteraturController extends Controller
 {
-    // List semua literatur
-    public function index()
+    // List semua literatur dengan fitur pencarian
+    public function index(Request $request)
     {
-        $literaturs = Literatur::orderBy('id_literatur', 'asc')->get();
+        $query = Literatur::query();
+        if ($request->filled('judul')) {
+            $query->where('judul', 'like', '%' . $request->judul . '%');
+        }
+        if ($request->filled('penulis')) {
+            $query->where('penulis', 'like', '%' . $request->penulis . '%');
+        }
+        $literaturs = $query->orderBy('id_literatur', 'asc')->get();
         return view('literatur.index', compact('literaturs'));
     }
 
