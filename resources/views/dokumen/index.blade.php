@@ -36,7 +36,7 @@
     </ul>
 
     <!-- Logout -->
-    <form method="POST" action="{{ route('logout') }}" class="logout-form">
+    <form method="POST" action="{{ route('logout') }}" class="logout-form" style="margin-top:auto;width:100%;">
         @csrf
         <button type="submit" class="btn-logout-red">
             <i data-lucide="log-out"></i> Logout
@@ -131,7 +131,8 @@
 .sidebar .menu li:hover { background:rgba(255,255,255,0.2); transform: translateX(5px); }
 
 /* Logout */
-.btn-logout-red { background:#E94A4A; color:white; padding:10px 20px; border-radius:10px; font-weight:500; display:flex; align-items:center; justify-content:center; gap:8px; transition: all 0.3s ease; border:none; cursor:pointer; width:100%; margin-top:auto; }
+.btn-logout-red { background:#E94A4A; color:white; padding:10px 20px; border-radius:10px; font-weight:500; display:flex; align-items:center; justify-content:center; gap:8px; transition: all 0.3s ease; border:none; cursor:pointer; width:100%; }
+.sidebar .logout-form { margin-top:auto; width:100%; }
 .btn-logout-red:hover { background:#cc0000; transform:scale(1.05); }
 
 /* Main Content */

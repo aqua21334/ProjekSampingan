@@ -4,7 +4,7 @@
 <div class="dashboard">
 <!-- Sidebar -->
 <aside class="sidebar">
-    <div class="logo mb-10"> <!-- tambahkan mb-10 untuk memberi jarak -->
+    <div class="logo" style="margin-bottom:70px;"> <!-- margin lebih besar agar menu turun -->
         <a href="{{ route('dashboard') }}">
             <img src="{{ asset('assets/Logo.jpg') }}" alt="Logo" class="w-20 h-20 rounded-lg" />
         </a>
