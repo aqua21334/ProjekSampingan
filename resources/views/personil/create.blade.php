@@ -2,67 +2,123 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tambah Personil</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    * { box-sizing: border-box; }
+
     body {
-      font-family: 'Konkhmer Sleokchher', sans-serif;
-      background: #f0f0f0;
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      background: url('https://images.unsplash.com/photo-1581091012184-68e01a4a9468?auto=format&fit=crop&w=1600&q=80') no-repeat center center/cover;
+      position: relative;
     }
+
+    body::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.5); /* overlay gelap */
+      z-index: 0;
+    }
+
     .form-container {
-      width: 1060px;
-      background: rgba(255, 255, 255, 0.9);
-      border-radius: 10px;
-      padding: 40px;
-      box-shadow: 0px 4px 6px rgba(0,0,0,0.2);
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 700px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      padding: 45px 35px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+      animation: fadeInUp 1s ease forwards;
+      opacity: 0;
+      transform: translateY(20px);
     }
+
+    @keyframes fadeInUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     h1 {
       text-align: center;
-      font-size: 40px;
-      margin-bottom: 30px;
+      font-size: 38px;
+      color: #060E7E;
+      margin-bottom: 35px;
     }
-    .form-group {
-      margin-bottom: 20px;
-    }
+
+    .form-group { margin-bottom: 20px; }
+
     label {
       display: block;
-      font-size: 20px;
-      margin-bottom: 8px;
+      font-size: 16px;
+      margin-bottom: 6px;
+      color: #333;
+      font-weight: 500;
     }
+
     input {
       width: 100%;
-      max-width: 540px;
-      height: 44px;
-      border-radius: 8px;
-      border: none;
-      background: #D9D9D9;
-      padding: 10px;
-      font-size: 16px;
+      padding: 12px 15px;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+      transition: all 0.3s ease;
     }
+
+    input:focus {
+      border-color: #4CAF50;
+      box-shadow: 0 0 8px rgba(76, 175, 80, 0.6);
+      outline: none;
+    }
+
     .form-actions {
       display: flex;
       justify-content: space-between;
       margin-top: 30px;
     }
+
     .btn {
-      width: 160px;
-      height: 50px;
-      border-radius: 8px;
+      width: 48%;
+      padding: 13px 0;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 12px;
       border: none;
-      font-size: 18px;
-      font-weight: bold;
       cursor: pointer;
+      transition: all 0.3s ease;
+      color: white;
     }
+
     .btn-back {
-      background: #7D81BE;
-      color: white;
+      background: linear-gradient(135deg, #7D81BE, #5F3DC4);
+      box-shadow: 0 4px 12px rgba(125,129,190,0.6);
     }
+
+    .btn-back:hover {
+      transform: scale(1.05);
+      opacity: 0.9;
+    }
+
     .btn-submit {
-      background: #4CAF50;
-      color: white;
+      background: linear-gradient(135deg, #43cea2, #185a9d);
+      box-shadow: 0 4px 12px rgba(67,206,162,0.6);
+    }
+
+    .btn-submit:hover {
+      transform: scale(1.05);
+      opacity: 0.9;
+    }
+
+    @media (max-width: 768px) {
+      .form-actions { flex-direction: column; gap: 15px; }
+      .btn { width: 100%; }
     }
   </style>
 </head>
@@ -72,32 +128,26 @@
     <h1>Tambahkan Personil</h1>
     <form action="/personil" method="POST">
       @csrf
-
       <div class="form-group">
         <label for="nip">NIP</label>
-        <input type="text" id="nip" name="nip" required>
+        <input type="text" id="nip" name="nip" placeholder="Masukkan NIP" required>
       </div>
-
       <div class="form-group">
         <label for="nama_personil">Nama</label>
-        <input type="text" id="nama_personil" name="nama_personil" required>
+        <input type="text" id="nama_personil" name="nama_personil" placeholder="Masukkan nama lengkap" required>
       </div>
-
       <div class="form-group">
         <label for="email">Email</label>
-        <input type="email" id="email" name="email" required>
+        <input type="email" id="email" name="email" placeholder="Masukkan email" required>
       </div>
-
       <div class="form-group">
         <label for="jabatan">Jabatan</label>
-        <input type="text" id="jabatan" name="jabatan" required>
+        <input type="text" id="jabatan" name="jabatan" placeholder="Masukkan jabatan" required>
       </div>
-
       <div class="form-group">
         <label for="no_hp">No HP</label>
-        <input type="text" id="no_hp" name="no_hp" required>
+        <input type="text" id="no_hp" name="no_hp" placeholder="Masukkan nomor HP" required>
       </div>
-
       <div class="form-actions">
         <button type="button" class="btn btn-back" onclick="history.back()">Kembali</button>
         <button type="submit" class="btn btn-submit">Simpan</button>
