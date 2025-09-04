@@ -11,13 +11,27 @@
 
         </div>
         <ul class="menu">
-            <li><a href="{{ route('personil.index') }}" style="display:block;width:100%;height:100%;color:inherit;text-decoration:none;">Personil</a></li>
-            <li><a href="{{ route('peralatan.index') }}" style="display:block;width:100%;height:100%;color:inherit;text-decoration:none;">Peralatan</a></li>
-            <li><a href="{{ route('sop.index') }}" style="display:block;width:100%;height:100%;color:inherit;text-decoration:none;">Daftar SOP</a></li>
-            <li><a href="{{ route('dokumen.index') }}" style="display:block;width:100%;height:100%;color:inherit;text-decoration:none;">Dokumen</a></li>
-            <li><a href="{{ route('permintaan.index') }}" style="display:block;width:100%;height:100%;color:inherit;text-decoration:none;">Permintaan Layanan</a></li>
-            <li><a href="{{ route('laporan.index') }}" style="display:block;width:100%;height:100%;color:inherit;text-decoration:none;">Laporan Hasil</a></li>
-            <li><a href="{{ route('literatur.index') }}" style="display:block;width:100%;height:100%;color:inherit;text-decoration:none;">Literatur</a></li>
+                <li class="{{ Route::currentRouteName() == 'personil.index' ? 'active' : '' }}">
+                    <a href="{{ route('personil.index') }}" style="display:block;width:100%;height:100%;color:inherit;text-decoration:none;">Personil</a>
+                </li>
+                <li class="{{ Route::currentRouteName() == 'peralatan.index' ? 'active' : '' }}">
+                    <a href="{{ route('peralatan.index') }}" style="display:block;width:100%;height:100%;color:inherit;text-decoration:none;">Peralatan</a>
+                </li>
+                <li class="{{ Route::currentRouteName() == 'sop.index' ? 'active' : '' }}">
+                    <a href="{{ route('sop.index') }}" style="display:block;width:100%;height:100%;color:inherit;text-decoration:none;">Daftar SOP</a>
+                </li>
+                <li class="{{ Route::currentRouteName() == 'dokumen.index' ? 'active' : '' }}">
+                    <a href="{{ route('dokumen.index') }}" style="display:block;width:100%;height:100%;color:inherit;text-decoration:none;">Dokumen</a>
+                </li>
+                <li class="{{ Route::currentRouteName() == 'permintaan.index' ? 'active' : '' }}">
+                    <a href="{{ route('permintaan.index') }}" style="display:block;width:100%;height:100%;color:inherit;text-decoration:none;">Permintaan Layanan</a>
+                </li>
+                <li class="{{ Route::currentRouteName() == 'laporan.index' ? 'active' : '' }}">
+                    <a href="{{ route('laporan.index') }}" style="display:block;width:100%;height:100%;color:inherit;text-decoration:none;">Laporan Hasil</a>
+                </li>
+                <li class="{{ Route::currentRouteName() == 'literatur.index' ? 'active' : '' }}">
+                    <a href="{{ route('literatur.index') }}" style="display:block;width:100%;height:100%;color:inherit;text-decoration:none;">Literatur</a>
+                </li>
         </ul>
         <!-- ...existing code... -->
         <div style="flex:1"></div>
@@ -134,6 +148,16 @@
     background: rgba(255,255,255,0.1);
     border-radius: 10px;
     cursor: pointer;
+}
+/* Highlight menu yang aktif */
+.sidebar .menu li.active {
+    background: #fff;
+    color: #2c2c2dff;
+    font-weight: bold;
+    border: 2px solid #edededff;
+}
+.sidebar .menu li.active a {
+    color: #dbdce2ff !important;
 }
 .sidebar .logout-btn {
     margin-top: auto;

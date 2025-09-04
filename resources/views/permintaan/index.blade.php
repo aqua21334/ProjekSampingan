@@ -11,13 +11,27 @@
             </a>
         </div>
         <ul class="menu">
-            <li><a href="{{ route('personil.index') }}">Personil</a></li>
-            <li><a href="{{ route('peralatan.index') }}">Peralatan</a></li>
-            <li><a href="{{ route('sop.index') }}">Daftar SOP</a></li>
-            <li><a href="{{ route('dokumen.index') }}">Dokumen</a></li>
-            <li><a href="{{ route('permintaan.index') }}">Permintaan Layanan</a></li>
-            <li><a href="{{ route('laporan.index') }}">Laporan Hasil</a></li>
-            <li><a href="{{ route('literatur.index') }}">Literatur</a></li>
+                <li class="{{ Route::currentRouteName() == 'personil.index' ? 'active' : '' }}">
+                    <a href="{{ route('personil.index') }}">Personil</a>
+                </li>
+                <li class="{{ Route::currentRouteName() == 'peralatan.index' ? 'active' : '' }}">
+                    <a href="{{ route('peralatan.index') }}">Peralatan</a>
+                </li>
+                <li class="{{ Route::currentRouteName() == 'sop.index' ? 'active' : '' }}">
+                    <a href="{{ route('sop.index') }}">Daftar SOP</a>
+                </li>
+                <li class="{{ Route::currentRouteName() == 'dokumen.index' ? 'active' : '' }}">
+                    <a href="{{ route('dokumen.index') }}">Dokumen</a>
+                </li>
+                <li class="{{ Route::currentRouteName() == 'permintaan.index' ? 'active' : '' }}">
+                    <a href="{{ route('permintaan.index') }}">Permintaan Layanan</a>
+                </li>
+                <li class="{{ Route::currentRouteName() == 'laporan.index' ? 'active' : '' }}">
+                    <a href="{{ route('laporan.index') }}">Laporan Hasil</a>
+                </li>
+                <li class="{{ Route::currentRouteName() == 'literatur.index' ? 'active' : '' }}">
+                    <a href="{{ route('literatur.index') }}">Literatur</a>
+                </li>
         </ul>
         <div style="flex:1"></div>
         <form method="POST" action="{{ route('logout') }}" style="width:100%;">
@@ -100,5 +114,14 @@
     .sidebar .menu li { padding: 15px; margin: 10px 0; text-align: center; background: rgba(255,255,255,0.1); border-radius: 10px; cursor: pointer; }
     .sidebar .logout-btn { margin-top: auto; padding: 12px; width: 100%; background: rgba(255, 80, 80, 0.8); border: none; color: white; border-radius: 10px; cursor: pointer; }
     .main-content { flex: 1; padding: 20px; background: #f9f9f9; }
+    .sidebar .menu li.active {
+    background: #fff;
+    color: #060E7E;
+    font-weight: bold;
+    border: 2px solid #7C62FF;
+}
+.sidebar .menu li.active a {
+    color: #060E7E !important;
+}
 </style>
 @endsection
