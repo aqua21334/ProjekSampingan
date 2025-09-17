@@ -82,10 +82,11 @@
                                 <td>{{ $sop->nama_sop }}</td>
                                 <td>
                                     @if($sop->deskripsi_sop)
-                                        <a href="{{ asset('storage/' . $sop->deskripsi_sop) }}" target="_blank" class="text-blue-500 hover:underline">Lihat File</a>
+                                        <a href="{{ asset('storage/' . $sop->deskripsi_sop) }}" target="_blank" class="pdf-link">Lihat File</a>
                                     @else
                                         <span class="text-gray-400 italic">Tidak ada file</span>
                                     @endif
+
                                 </td>
                                 <td class="actions">
                                     <a href="{{ route('sop.edit', $sop->kode_sop) }}" class="edit">
@@ -158,6 +159,16 @@ tr:hover { background:#f3f4f6; }
 .actions a.edit:hover { color:#1e40af; }
 .actions button.delete { color:#e94a4a; }
 .actions button.delete:hover { color:#cc0000; }
+
+.pdf-link {
+    color: #2563eb;
+    font-weight: 600;
+    text-decoration: underline;
+    transition: color 0.2s;
+}
+.pdf-link:hover {
+    color: #1e40af;
+}
 
 @media(max-width:768px){
     .search-form { flex-direction:column; }
