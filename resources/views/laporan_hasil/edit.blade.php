@@ -114,7 +114,7 @@
 <div class="form-container">
     <h1>Edit Laporan Hasil</h1>
 
-    <form action="{{ route('laporan_hasil.update', $laporan->id_laporan) }}" method="POST">
+    <form action="{{ route('laporan_hasil.update', $laporan->id_laporan) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
@@ -124,13 +124,24 @@
         </div>
 
         <div class="form-group">
-            <label for="judul">Judul</label>
+            <label for="judul">Judul Laporan</label>
             <input type="text" id="judul" name="judul" value="{{ old('judul', $laporan->judul) }}" required>
         </div>
 
         <div class="form-group">
-            <label for="isi_laporan">Isi Laporan</label>
-            <textarea id="isi_laporan" name="isi_laporan" required>{{ old('isi_laporan', $laporan->isi_laporan) }}</textarea>
+            <label for="file_pdf">File PDF</label>
+            <input type="file" id="file_pdf" name="file_pdf" accept="application/pdf">
+            @if($laporan->file_pdf)
+                <div style="margin-top:8px;">
+                    <span>File saat ini: </span>
+                    <a href="{{ asset('storage/' . $laporan->file_pdf) }}" target="_blank">Lihat / Download PDF</a>
+                </div>
+            @endif
+            <input type="hidden" name="file_pdf_lama" value="{{ $laporan->file_pdf }}">
+        </div>
+        <div class="form-group">
+            <label for="created_at">Created At</label>
+            <input type="text" id="created_at" name="created_at" value="{{ old('created_at', $laporan->created_at) }}" readonly>
         </div>
 
         <div class="form-group">

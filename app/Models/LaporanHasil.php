@@ -16,7 +16,8 @@ class LaporanHasil extends Model
     protected $fillable = [
         'id_laporan',
         'judul',
-        'isi_laporan',
+        'file_pdf',
         'tanggal_laporan',
+        'created_at',
     ];
 }

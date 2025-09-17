@@ -69,9 +69,10 @@
                             <tr>
                                 <th>No</th>
                                 <th>ID Laporan</th>
-                                <th>Judul</th>
-                                <th>Isi Laporan</th>
+                                <th>Judul Laporan</th>
+                                <th>File PDF</th>
                                 <th>Tanggal Laporan</th>
+                                <th>Created At</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -81,8 +82,15 @@
                                 <td>{{ $i+1 }}</td>
                                 <td>{{ $laporan->id_laporan }}</td>
                                 <td>{{ $laporan->judul }}</td>
-                                <td>{{ $laporan->isi_laporan }}</td>
+                                <td>
+                                    @if($laporan->file_pdf)
+                                        <a href="{{ asset('storage/' . $laporan->file_pdf) }}" target="_blank" style="color:#2563eb; font-weight:600; text-decoration:underline;">Lihat PDF</a>
+                                    @else
+                                        -
+                                    @endif
+                                </td>
                                 <td>{{ $laporan->tanggal_laporan }}</td>
+                                <td>{{ $laporan->created_at }}</td>
                                 <td class="actions">
                                     <a href="{{ route('laporan_hasil.edit', $laporan->id_laporan) }}" class="edit"><i data-lucide="edit"></i> Edit</a>
                                     <form action="{{ route('laporan_hasil.destroy', $laporan->id_laporan) }}" method="POST" class="inline">

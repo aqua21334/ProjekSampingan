@@ -34,6 +34,11 @@ class PeralatanController extends Controller
             $query->where('tanggal_kalibrasi', $request->tanggal_kalibrasi);
         }
 
+        // Urutkan agar status 'Belum' di atas
+        $query->orderByRaw("CASE WHEN status_kalibrasi = 'Belum' THEN 0 ELSE 1 END")
+              ->orderBy('status_kalibrasi')
+              ->orderBy('nama_peralatan');
+
         $peralatans = $query->get();
 
         return view('peralatan.index', compact('peralatans'));

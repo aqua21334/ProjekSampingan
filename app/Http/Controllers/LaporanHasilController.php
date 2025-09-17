@@ -40,10 +40,19 @@ class LaporanHasilController extends Controller
     {
             $validated = $request->validate([
                 'id_laporan' => 'required|string|max:20|unique:laporan_hasils,id_laporan',
-                'judul' => 'required|string|max:150',
-                'isi_laporan' => 'required',
+                'judul' => 'required|string|max:255',
+                'file_pdf' => 'required|file|mimes:pdf|max:2048',
                 'tanggal_laporan' => 'required|date',
             ]);
+
+            // Handle file upload
+            if ($request->hasFile('file_pdf')) {
+                $file = $request->file('file_pdf');
+                $path = $file->store('laporan_pdf', 'public');
+                $validated['file_pdf'] = $path;
+            }
+
+            $validated['created_at'] = now();
             LaporanHasil::create($validated);
             return redirect()->route('laporan_hasil.index')->with('success', 'Laporan berhasil ditambahkan.');
     }
@@ -58,15 +67,27 @@ class LaporanHasilController extends Controller
     // Update laporan
     public function update(Request $request, $id)
     {
-            $laporan = LaporanHasil::findOrFail($id);
-            $validated = $request->validate([
-                'id_laporan' => 'required|string|max:20|unique:laporan_hasils,id_laporan,' . $laporan->id_laporan . ',id_laporan',
-                'judul' => 'required|string|max:150',
-                'isi_laporan' => 'required',
-                'tanggal_laporan' => 'required|date',
-            ]);
-            $laporan->update($validated);
-            return redirect()->route('laporan_hasil.index')->with('success', 'Laporan berhasil diupdate.');
+        $laporan = LaporanHasil::findOrFail($id);
+        $validated = $request->validate([
+            'id_laporan' => 'required|string|max:20|unique:laporan_hasils,id_laporan,' . $laporan->id_laporan . ',id_laporan',
+            'judul' => 'required|string|max:255',
+            'file_pdf' => 'nullable|file|mimes:pdf|max:2048',
+            'tanggal_laporan' => 'required|date',
+        ]);
+
+        // Handle file upload
+        if ($request->hasFile('file_pdf')) {
+            $file = $request->file('file_pdf');
+            $path = $file->store('laporan_pdf', 'public');
+            $validated['file_pdf'] = $path;
+        } else {
+            // Pakai file lama jika tidak upload baru
+            $validated['file_pdf'] = $request->input('file_pdf_lama');
+        }
+
+        $validated['created_at'] = $laporan->created_at;
+        $laporan->update($validated);
+        return redirect()->route('laporan_hasil.index')->with('success', 'Laporan berhasil diupdate.');
     }
 
     // Hapus laporan
