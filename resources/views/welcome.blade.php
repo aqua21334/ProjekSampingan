@@ -154,7 +154,7 @@
     </div>
 
     <!-- Welcome Text -->
-    <h2>Selamat Datang</h2>
+    <h2>Selamat Datang Di Laboratorium balai teknik rawa</h2>
 
     <!-- Login Form -->
     <form method="POST" action="{{ route('login') }}">

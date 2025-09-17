@@ -51,7 +51,21 @@ Route::get('/dashboard', function () {
     $laporanCount = LaporanHasil::count();
     $permintaanAll = \App\Models\Permintaan::all();
     $permintaanList = $permintaanAll->whereIn('status', ['pending', 'proses']);
-    return view('dashboard', compact('personilCount', 'peralatanCount', 'sopCount', 'laporanCount', 'permintaanList', 'permintaanAll'));
+
+    // Statistik kalibrasi peralatan
+    $peralatanSudah = Peralatan::where('status_kalibrasi', 'Sudah')->count();
+    $peralatanBelum = Peralatan::where('status_kalibrasi', 'Belum')->count();
+
+    return view('dashboard', compact(
+        'personilCount',
+        'peralatanCount',
+        'sopCount',
+        'laporanCount',
+        'permintaanList',
+        'permintaanAll',
+        'peralatanSudah',
+        'peralatanBelum',
+    ));
 })->name('dashboard');
 
 Route::middleware('auth')->group(function () {

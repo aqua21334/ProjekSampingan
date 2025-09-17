@@ -67,10 +67,50 @@
 
         <div class="content">
             <div class="permintaan-section">
+                <h2>Peralatan Belum Kalibrasi</h2>
+                @php
+                    $daftarPeralatan = \App\Models\Peralatan::where('status_kalibrasi', 'Belum')->get();
+                @endphp
+                @forelse($daftarPeralatan as $alat)
+                    @php
+                        $notif = '';
+                        if ($alat->tanggal_kalibrasi) {
+                            $tglKalibrasi = \Carbon\Carbon::parse($alat->tanggal_kalibrasi);
+                            $selisih = $tglKalibrasi->diffInDays(now(), false);
+                            if ($selisih >= -14 && $selisih < 0) {
+                                $notif = '<span style="color:#eab308; font-weight:600;">Kalibrasi akan jatuh tempo (' . $tglKalibrasi->format('d-m-Y') . ')</span>';
+                            } elseif ($selisih === 0) {
+                                $notif = '<span style="color:#eab308; font-weight:600;">Kalibrasi hari ini!</span>';
+                            } elseif ($selisih > 0) {
+                                $notif = '<span style="color:#ef4444; font-weight:600;">Sudah lewat kalibrasi!</span>';
+                            }
+                        }
+                    @endphp
+                    <div class="box fade-in belum" style="background: rgba(248,113,113,0.07);">
+                        <div>
+                            <strong>{{ $alat->nama_peralatan }}</strong><br>
+                            <span style="font-size:13px; color:#555;">Kode: {{ $alat->kode_bmn }}</span><br>
+                            <span style="font-size:13px; color:#888;">Tanggal Kalibrasi: {{ $alat->tanggal_kalibrasi ? date('d-m-Y', strtotime($alat->tanggal_kalibrasi)) : '-' }}</span><br>
+                            @if($notif)
+                                {!! $notif !!}
+                            @endif
+                        </div>
+                        <span class="status belum" style="color:#f87171; font-weight:700;">
+                            Belum Kalibrasi
+                        </span>
+                    </div>
+                @empty
+                    <div class="box">Semua peralatan sudah dikalibrasi.</div>
+                @endforelse
+            </div>
+            <div class="permintaan-section">
                 <h2>Permintaan Layanan</h2>
                 @forelse($permintaanList as $permintaan)
                     <div class="box fade-in {{ strtolower($permintaan->status) }}">
-                        <strong>{{ $permintaan->jenis_permintaan }}</strong>
+                        <div>
+                            <strong>{{ $permintaan->jenis_permintaan }}</strong><br>
+                            <span style="font-size:13px; color:#555;">ID: {{ $permintaan->id_permintaan ?? '-' }}</span>
+                        </div>
                         <span class="status {{ strtolower($permintaan->status) }}">
                             {{ ucfirst($permintaan->status) }}
                         </span>
@@ -86,6 +126,13 @@
                     <canvas id="donutChart" width="200" height="200"></canvas>
                 </div>
             </div>
+
+            <div class="statistik-section">
+                <h2>Statistik Kalibrasi Peralatan</h2>
+                <div class="chart-container">
+                    <canvas id="peralatanChart" width="200" height="200"></canvas>
+                </div>
+            </div>
         </div>
     </main>
 </div>
@@ -96,6 +143,7 @@
 <script>
     lucide.createIcons();
 
+    // Statistik layanan
     const permintaanData = @json($permintaanAll);
     let selesai = 0, proses = 0, pending = 0;
     permintaanData.forEach(p => {
@@ -103,7 +151,6 @@
         else if (p.status?.toLowerCase() === 'proses') proses++;
         else if (p.status?.toLowerCase() === 'pending') pending++;
     });
-
     const ctx = document.getElementById('donutChart').getContext('2d');
     new Chart(ctx, {
         type: 'doughnut',
@@ -112,6 +159,25 @@
             datasets: [{
                 data: [selesai, proses, pending],
                 backgroundColor: ['#22c55e', '#facc15', '#f87171'],
+            }]
+        },
+        options: {
+            animation: { animateScale: true, animateRotate: true },
+            plugins: { legend: { position: 'top' } }
+        }
+    });
+
+    // Statistik kalibrasi peralatan
+    const peralatanSudah = {{ $peralatanSudah }};
+    const peralatanBelum = {{ $peralatanBelum }};
+    const ctxPeralatan = document.getElementById('peralatanChart').getContext('2d');
+    new Chart(ctxPeralatan, {
+        type: 'doughnut',
+        data: {
+            labels: ['Sudah Kalibrasi', 'Belum Kalibrasi'],
+            datasets: [{
+                data: [peralatanSudah, peralatanBelum],
+                backgroundColor: ['#22c55e', '#f87171'],
             }]
         },
         options: {
