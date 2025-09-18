@@ -29,6 +29,9 @@
         <li class="{{ Route::currentRouteName() == 'laporan.index' ? 'active' : '' }}">
             <a href="{{ route('laporan.index') }}"><i data-lucide="bar-chart-2"></i> Laporan Hasil</a>
         </li>
+        <li class="{{ Route::currentRouteName() == 'pnpb.index' ? 'active' : '' }}">
+                <a href="{{ route('pnpb.index') }}"><i data-lucide="dollar-sign"></i> PNBP</a>
+            </li>
         <li class="{{ Route::currentRouteName() == 'literatur.index' ? 'active' : '' }}">
             <a href="{{ route('literatur.index') }}"><i data-lucide="book-open"></i> Literatur</a>
         </li>

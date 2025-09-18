@@ -8,6 +8,7 @@ use App\Http\Controllers\PermintaanController;
 use App\Http\Controllers\LaporanHasilController;
 use App\Http\Controllers\LiteraturController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PnpbController;
 
 // Personil
 Route::resource('personil', PersonilController::class)->parameters([
@@ -32,6 +33,9 @@ Route::resource('dokumen', App\Http\Controllers\DokumenController::class);
 
 // Laporan Hasil
 Route::resource('laporan_hasil', LaporanHasilController::class);
+// PNBP
+Route::resource('pnpb', PnpbController::class);
+
 // Alias for sidebar navigation
 Route::get('laporan', [LaporanHasilController::class, 'index'])->name('laporan.index');
 
@@ -49,6 +53,7 @@ Route::get('/dashboard', function () {
     $peralatanCount = Peralatan::count();
     $sopCount = Sop::count();
     $laporanCount = LaporanHasil::count();
+    $pnpbCount = \App\Models\Pnpb::count();
     $permintaanAll = \App\Models\Permintaan::all();
     $permintaanList = $permintaanAll->whereIn('status', ['pending', 'proses']);
 
@@ -61,6 +66,7 @@ Route::get('/dashboard', function () {
         'peralatanCount',
         'sopCount',
         'laporanCount',
+        'pnpbCount',
         'permintaanList',
         'permintaanAll',
         'peralatanSudah',
